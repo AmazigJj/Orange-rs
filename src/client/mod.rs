@@ -33,6 +33,7 @@ pub struct Client {
     pub depth_texture: DepthTextureWrapper,
 
     pipelines: HashMap<String, wgpu::RenderPipeline>,
+    compute_pipelines: HashMap<String, wgpu::ComputePipeline>,
     buffers: HashMap<String, wgpu::Buffer>,
     bind_group_layouts: HashMap<String, BindGroupLayout>,
     bind_groups: HashMap<String, wgpu::BindGroup>,
@@ -68,6 +69,7 @@ impl Client {
             depth_texture,
 
             pipelines: HashMap::new(),
+            compute_pipelines: HashMap::new(),
             buffers: HashMap::new(),
             bind_group_layouts: HashMap::new(),
             bind_groups: HashMap::new(),
@@ -106,6 +108,14 @@ impl Client {
 
     pub fn insert_pipeline<T: AsRef<str>>(&mut self, id: T, pipeline: wgpu::RenderPipeline) {
         self.pipelines.insert(id.as_ref().to_string(), pipeline);
+    }
+
+    pub fn get_compute_pipeline<T: AsRef<str>>(&self, id: T) -> Option<&wgpu::ComputePipeline> {
+        self.compute_pipelines.get(id.as_ref())
+    }
+
+    pub fn insert_compute_pipeline<T: AsRef<str>>(&mut self, id: T, pipeline: wgpu::ComputePipeline) {
+        self.compute_pipelines.insert(id.as_ref().to_string(), pipeline);
     }
 
     pub fn get_buffer<T: AsRef<str>>(&self, id: T) -> Option<&wgpu::Buffer> {
